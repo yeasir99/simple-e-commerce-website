@@ -1,113 +1,117 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  FormControl,
-  InputLabel,
-  Input,
-  Grid,
-  CardHeader,
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { deepPurple } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
-const ColorButton = withStyles(theme => ({
-  root: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500],
-    '&:hover': {
-      backgroundColor: deepPurple[700],
-    },
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="#!">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-}))(Button);
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-const Login = ({ history }) => {
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-  });
-  const { email, password } = data;
-
-  // grave the data
-
-  const handleChange = e =>
-    setData({ ...data, [e.target.name]: e.target.value });
-
-  // handle submit
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(email, password);
-    setData({
-      email: '',
-      password: '',
-    });
-  };
+const Login = props => {
+  const classes = useStyles();
 
   return (
-    <div className="my-1">
-      <Grid container>
-        <Grid item xs={0} sm={2} md={3}></Grid>
-        <Grid item xs={12} sm={8} md={6}>
-          <Card>
-            <CardHeader title="Log in to your account" />
-            <CardContent>
-              <form onSubmit={handleSubmit}>
-                <FormControl style={{ width: '100%' }}>
-                  <InputLabel htmlFor="my-input">Email address</InputLabel>
-                  <Input
-                    id="my-input"
-                    aria-describedby="my-helper-text"
-                    type="email"
-                    name="email"
-                    value={email}
-                    required
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl style={{ width: '100%' }}>
-                  <InputLabel htmlFor="my-input">Password</InputLabel>
-                  <Input
-                    id="my-input"
-                    aria-describedby="my-helper-text"
-                    type="password"
-                    name="password"
-                    value={password}
-                    required
-                    onChange={handleChange}
-                  />
-                </FormControl>
-              </form>
-            </CardContent>
-
-            <CardActions>
-              <Typography color="textSecondary" gutterBottom>
-                Don't have account?{' '}
-                <Link
-                  to="/registration"
-                  style={{ color: '#673ab7', fontSize: 18 }}
-                >
-                  signup
-                </Link>
-              </Typography>
-              <ColorButton
-                variant="contained"
-                type="submit"
-                color="primary"
-                style={{ marginLeft: 'auto' }}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form className={classes.form} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign In
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link
+                onClick={() => props.history.push('/registration')}
+                variant="body2"
+                style={{ cursor: 'pointer' }}
               >
-                Login
-              </ColorButton>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item xs={0} sm={2} md={3}></Grid>
-      </Grid>
-    </div>
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
   );
 };
 
