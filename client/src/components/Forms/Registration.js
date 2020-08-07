@@ -1,74 +1,67 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="#!">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(6),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import {
+  Container,
+  CssBaseline,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Link,
+} from '@material-ui/core';
 
 const Registration = props => {
-  const classes = useStyles();
+  const classes = useStyle();
+
+  // Declare the form state
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+
+  // Destructure data from formData
+  const { firstName, lastName, email, password, password2 } = formData;
+
+  // Form Data change Handler
+  const handleChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  // Submit Form handler
+  const handleSubmit = e => {
+    e.preventDefault();
+    // handle business logic
+    console.log(formData);
+    // clear formData
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      password2: '',
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                label="FirstName"
+                name="firstName"
+                value={firstName}
+                onChange={handleChange}
                 autoFocus
               />
             </Grid>
@@ -77,10 +70,10 @@ const Registration = props => {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
+                label="LastName"
                 name="lastName"
-                autoComplete="lname"
+                value={lastName}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,10 +81,11 @@ const Registration = props => {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
                 label="Email Address"
+                type="email"
                 name="email"
-                autoComplete="email"
+                value={email}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -99,11 +93,11 @@ const Registration = props => {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
                 label="Password"
+                name="password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
+                value={password}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -111,17 +105,11 @@ const Registration = props => {
                 variant="outlined"
                 required
                 fullWidth
-                name="confirm-password"
                 label="Confirm Password"
                 type="password"
-                id="confirm-password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                name="password2"
+                value={password2}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
@@ -137,9 +125,9 @@ const Registration = props => {
           <Grid container justify="flex-end">
             <Grid item>
               <Link
-                onClick={() => props.history.push('/login')}
-                style={{ cursor: 'pointer' }}
+                className={classes.link}
                 variant="body2"
+                onClick={() => props.history.push('/login')}
               >
                 Already have an account? Sign in
               </Link>
@@ -147,11 +135,29 @@ const Registration = props => {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };
+
+// custom style
+
+const useStyle = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(6),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  link: {
+    cursor: 'pointer',
+  },
+}));
 
 export default Registration;
